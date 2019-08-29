@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from 'axios'
+import key from './secret/key'
 
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
   })
 
   useEffect(() => {
-    axios.get('https://api.nasa.gov/planetary/apod?api_key=j53v9dvTGZXp3UeeJV9KgkvXtf35lawivkMwfwtS')
+    axios.get(`https://api.nasa.gov/planetary/apod?api_key=${key}`)
       .then(res => {
         return setData(res.data)
       })
@@ -27,7 +28,7 @@ function App() {
   console.log(data)
 
   const changeDate = (e) => {
-    axios.get(`https://api.nasa.gov/planetary/apod?api_key=j53v9dvTGZXp3UeeJV9KgkvXtf35lawivkMwfwtS&date=${e.target.value}`)
+    axios.get(`https://api.nasa.gov/planetary/apod?api_key=${key}&date=${e.target.value}`)
       .then(res => {
         return setData(res.data)
       })
@@ -41,7 +42,7 @@ function App() {
     <div className="App">
       <input type='date' value={data.date} onChange={(e) => changeDate(e)}/>
       <h1 className='tile'>{data.title}</h1>
-      <img className='image' src={data.url} alt='nasa pic of day' />
+      { (data.media_type === 'image') ? <img className='image' src={data.url} alt='nasa pic of day' /> : <iframe src={data.url}></iframe>}
       <p className='explanation'>{data.explanation}</p>
       <h4 className='copyright'>{data.copyright}</h4>
       <p className='date'>{data.date}</p>
