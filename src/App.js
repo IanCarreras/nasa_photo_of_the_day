@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from 'axios'
 import key from './secret/key'
-
+import Header from './header/header'
 
 function App() {
   const onMount = 'mount'
@@ -20,7 +20,7 @@ function App() {
         return setData(res.data)
       })
       .catch(err => {
-        console.log(err)
+        console.log(err.response)
         return err
       })
   }, [onMount])
@@ -31,26 +31,16 @@ function App() {
       return setData(res.data)
     })
     .catch(err => {
-      console.log(err)
+      console.log(err.response)
       return err
     })
   }, [data.date])
 
-  // const changeDate = (e) => {
-  //   axios.get(`https://api.nasa.gov/planetary/apod?api_key=${key}&date=${e.target.value}`)
-  //     .then(res => {
-  //       return setData(res.data)
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //       return err
-  //     })
-  // }
-
   return (
     <div className="App">
-      <input type='date' value={data.date} onChange={(e) => setData({date: e.target.value})}/>
-      <h1 className='tile'>{data.title}</h1>
+      {/* <input type='date' value={data.date} onChange={(e) => setData({date: e.target.value})}/>
+      <h1 className='tile'>{data.title}</h1> */}
+      <Header date={data.date} setData={setData} title={data.title} />
       { (data.media_type === 'image') ? <img className='image' src={data.url} alt='nasa pic of day' /> : <iframe title='video' src={data.url}></iframe> }
       <p className='explanation'>{data.explanation}</p>
       <h4 className='copyright'>{data.copyright}</h4>
